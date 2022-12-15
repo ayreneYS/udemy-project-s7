@@ -251,7 +251,7 @@ body {
 }
 
 .header {
-  background-color: #f9f5f3;
+  background-color: #f4eded;
   grid-area: head;
   justify-content: space-between;
   align-items: center;
@@ -259,7 +259,7 @@ body {
 }
 
 .header__logo {
-  height: 9rem;
+  height: 7rem;
   margin-left: 4rem;
   display: block;
 }
