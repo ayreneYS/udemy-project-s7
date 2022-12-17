@@ -1,6 +1,7 @@
 import View from './View.js';
 
-import icons from 'url:../../img/icons.svg';
+// import icons from '../img/icons.svg'; // Parcel 1
+import icons from 'url:../../img/icons.svg'; // Parcel 2
 import { Fraction } from 'fractional';
 
 class RecipeView extends View {
@@ -17,13 +18,19 @@ class RecipeView extends View {
       const btn = e.target.closest('.btn--update-servings');
       if (!btn) return;
       const { updateTo } = btn.dataset;
+      if (+updateTo > 0) handler(+updateTo);
+    });
+  }
 
-      if (updateTo > 0) handler(+updateTo);
+  addHandlerAddBookmark(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--bookmark');
+      if (!btn) return;
+      handler();
     });
   }
 
   _generateMarkup() {
-    console.log(this._data);
     return `
       <figure class="recipe__fig">
         <img src="${this._data.image}" alt="${
@@ -70,12 +77,17 @@ class RecipeView extends View {
             </button>
           </div>
         </div>
-        
-        <div class="recipe__user-generated">
+
+        <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+          <svg>
+            <use href="${icons}#icon-user"></use>
+          </svg>
         </div>
-        <button class="btn--round">
+        <button class="btn--round btn--bookmark">
           <svg class="">
-            <use href="${icons}#icon-bookmark-fill"></use>
+            <use href="${icons}#icon-bookmark${
+      this._data.bookmarked ? '-fill' : ''
+    }"></use>
           </svg>
         </button>
       </div>
@@ -106,7 +118,7 @@ class RecipeView extends View {
           </svg>
         </a>
       </div>
-  `;
+    `;
   }
 
   _generateMarkupIngredient(ing) {
@@ -123,7 +135,7 @@ class RecipeView extends View {
         ${ing.description}
       </div>
     </li>
-    `;
+  `;
   }
 }
 
